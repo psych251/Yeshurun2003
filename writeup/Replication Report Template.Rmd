@@ -1,6 +1,6 @@
 ---
 title: "Replication of Study: Transient Spatial Attention Degrades Temporal Resolution by Yeshurun & Levy (2003, Psychological Science)"
-author: "Replication Author[s]: Insub Kim (insubkim@stanford.edu)"
+author: "Insub Kim (insubkim@stanford.edu)"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output:
   html_document:
@@ -12,28 +12,33 @@ output:
 
 <!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
 
-
-##comment for me
-
-g*power
+<!-- g*power
 power_analysis finding out how many we need to recruit
 
 $7.25/hour
 about $70 budget
 https://github.com/psych251
 http://rpubs.com/jcachia/426413
+ -->
+
 
 ##Introduction
 
+Yeshurun and Levy (2003), investigated the effect of spatial attention on visual temporal processes. The authors manipulated observers’ transient spatial attention by using peripheral pre-cueing and measured their temporal resolution by two-flash fusion threshold (ability to discriminate successive two light flashes). Through this investigation, they found that enhanced spatial attention reduced temporal resolution.
 
-Introductions can be just 1-2 paragraphs clarifying the main idea of the original study, the target finding for replication, and any other essential information.  
+I chose this paper because my research interest lies in establishing spatial-temporal model for our visual cortex. Specifically, as this paper investigated the relationship between spatial and temporal visual characteristics, I am hoping that replicating this paper would provide further insights on how attentional factors could contribute to interplays between perceptual domain of space and time. In the long run, I would like to incorporate the effect of attention on temporal processing with its emphasis on foveal and peripheral spatial representation differences.
 
-It will NOT have a literature review -- that is in the original publication. You can write both the introduction and the methods in past tense.  
+For this project, each observer’s threshold of temporal resolution will be measured in two different conditions (cued and un-cued). In cued trials, a periphery cue will be presented before the target onset, which indicate the target’s location. While in un-cued trials, neutral cue with no indication of the target’s location will be presented. Therefore, precise control of stimuli presentation timing might be a challenge for the replication project and I am not sure if M-turk can handle stimulus timing as brief as 11 ms.
 
-A short justification for your choice of experiment in terms of your research interests or research program (1 paragraph). This justification should tell us why you chose this particular result – this section is especially important if you are choosing a result outside of the standard MTurk/Psych Sci model.
-A description of the stimuli and procedures that will be required to conduct this experiment, and what the challenges will be (1-2 paragraphs).
-A link to the repository and to the original paper (as hosted in your repo). The goal is that we should be able to click on these links and review that your repo is formatted right and look at the original paper. 
+The original paper had 3 different experiments. However, I am to only replicate experiment 3 for this project and observers will be recruited from Amazon M-turk.
 
+* Github repository: https://github.com/psych251/Yeshurun2003
+	
+* Original paper: https://github.com/psych251/Yeshurun2003/tree/master/original_paper
+
+* rPubLink: http://rpubs.com/insubkim/536227
+
+* Reference: Yeshurun, Y., & Levy, L. (2003). Transient spatial attention degrades temporal resolution. Psychological Science, 14(3), 225-231.
 
 ##Methods
 
