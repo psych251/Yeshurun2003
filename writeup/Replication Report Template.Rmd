@@ -21,6 +21,30 @@ https://github.com/psych251
 http://rpubs.com/jcachia/426413
  -->
 
+<!-- Some researchers have suggested that attention enhances spatial
+resolution by reducing the size of receptive fields at the attended location
+(e.g., Desimone & Duncan, 1995; Moran & Desimone, 1985). -->
+
+
+<!-- our submission for this assignment is your replication report, rendered in RPubs. The sections that should be filled are:
+
+Introduction
+Methods
+Results > Data Preparation
+Results > Confirmatory Analysis
+Please remember to add A) a link to the repository for the full project and B) a link to the paradigm so that a reader can click and see exactly what your experiment looks like.
+
+In this assignment we are asking you to fill in text in the methods. You don't have data yet, so you can't write code. But the idea is to be as precise as possible with respect to the exclusions, data prep, and confirmatory analysis as you can be. 
+
+In particular, with respect to the confirmatory analysis, please try your best to find and justify a SINGLE statistical test that justifies the main inference of the paper. This can be difficult in certain cases, but please do your best to give a test and justification. 
+
+Note that some folks in the class did not render in RPubs last time - PLEASE do this to help TAs and instructor grades. If you have troubles with this step, reach out to us. 
+
+ 
+
+EDIT (Oct 14, 2019): Since we are covering power analyses next week, please don't worry about filling out the power analysis section of the Methods for this assignment. Similarly, since we are just covering Qualtrics and JavaScript this week, please don't worry about submitting the link to your experiment. However, since the next project assignment (in 2 weeks) requires running a pilot study, please ensure that both the power analysis and the experiment link are ready by that time.  -->
+
+
 
 ##Introduction
 
@@ -44,27 +68,243 @@ The original paper had 3 different experiments. However, I am to only replicate 
 
 ###Power Analysis
 
-
-
 Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
 
 ###Planned Sample
 
-Planned sample size and/or termination rule, sampling frame, known demographics if any, preselection rules if any.
+I will use N subjects based on the power analysis.
 
 ###Materials
 
-All materials - can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
+Two-flash fusion threshold: Measure of temporal resolution. "Two flashes of light were presented successively to the same location, and we determined the minimal interval between the flashes at which they were still perceived as two separate flashes, rather than as a single continuous flash. The shorter this critical interval is, the higher the temporal resolution (e.g., Artieda, Pastor, Lacruz, & Obeso, 1992;Reeves, 1996)."
+
+Target: The target (37-cd/m2 disk with a diameter of 3 degrees) was composed of two flashes of light separated by a brief interval or a single continous flash. "It appeared on a black background at one of 11 possible locations along the horizontal meridian, with eccentricity (distance from the center) ranging from 0 to 16.5 degrees The cue in the cued trials was a 1 X 0.3 degrees green horizontal bar (43 cd/m2) appearing 0.5 degree above the target’s location. In the neutral trials, two 17 x 0.3 degree green horizontal lines appeared above and below the entire display."
+
+Insturements: 21-inch monitor of a PowerMac G4 computer was used in the original experiment. 
 
 ###Procedure	
 
-Can quote directly from original article - just put the text in quotations and note that this was followed precisely.  Or, quote directly and just point out exceptions to what was described in the original article.
+Followed the exact procedure as quated from the original article:
+
+"Each trial began with a fixation point followed by the attentional cue. The cue was present until the target’s offset, to prevent confusion between the flickering of the cue and that of the target. The target was presented 94 ms after onset of the cue: On 50% of the trials, two disks appeared, each for 47 ms, separated by a variable interval (interstimulus interval, ISI, of 11–34 ms). On the rest of the trials, a single disk was presented for a duration ranging from 105 to 130 ms. These brief durations ensured that eye movements could not occur between cue onset and target offset (Mayfrank, Kimmig, & Fischer,1987). Each observer viewed 864 trials presented in a randomized order. Both accuracy and reaction time (RT) were recorded."
+
+![**[Fig.1. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/procedure.png)
+
+### Experimetnal Code
+
+Due to the requirement of precise timing of my project, I coded my experiment using MATLAB psychtoolbox. 
+
+As written below:
+
+```{r eval=FALSE}
+
+%% SpatioTemporal Replication proejct 
+clear all; close all; clc;
+rand('seed', GetSecs);
+KbName('UnifyKeyNames'); % keyboard
+
+Experimenter = -3;
+Participant = -3;
+Scanner = -3;
+
+%% Subject information
+subName = input('Subject Initials:  ', 's');
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% directory setting
+genDir = '/Users/kalanit/Experiments/replicate';
+%genDir = '/Users/sangkyu/Box Sync/mooney';
+addpath(genpath(fullfile(genDir,'_FUNC')));
+dataDir = fullfile(genDir,'_DATA','behavior',subName);
+if ~exist(dataDir) &&  ~strcmp(subName,'tes'), mkdir(dataDir); end
+datas = getAllFiles(dataDir,'*.mat',1);
+runN=length(datas)+1;
+dataName = fullfile(dataDir,sprintf('exp1_%s_%d',subName,length(datas)+1));
+
+%% screen setting
+bdgcol = 128;
+Screen('Preference', 'SkipSyncTests', 1);
+ScreenNum = max(Screen('Screens'));
+[wptr,rect]=Screen('OpenWindow',ScreenNum,[0 0 0]);
+Screen('BlendFunction', wptr, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+% Screen('HideCursorHelper', wptr);
+[cx, cy] = RectCenter(rect);
+ifi = 1/85;
+
+Screen('TextSize',wptr, 40);
+
+
+
+%% experiment matrix design
+
+fixaSz = 5;
+totalTrial=864;
+cond=[0,1]; % 1: cued 0: uncued
+loc=[1:6];
+type=[1,2]; % 1: single disk, 2: two disks
+ISI_base=[1,2,3];
+iteration=1; % this should be 12
+
+[cueing,tarType,tarLoc,ISI]= ...
+    BalanceFactors(iteration,1,cond,type,loc,ISI_base);
+
+trialNum=1:length(cueing);
+emat=[cueing,tarType,tarLoc,ISI];
+
+if ~strcmp(subName,'tes'),save(dataName,'emat');end
+
+%% experiment loop
+Screen('DrawText',wptr,'start',cx/2,cy/2,[255 255 255]);
+Screen('Flip',wptr);
+
+scanPulse = 0;
+while scanPulse ~= 1
+    [keyIsDown, ~, keyCode] = KbCheck(Participant);
+%     [keyIsDown, ~, keyCode] = PsychHID('KbCheck');
+    if keyIsDown
+        a=3
+        if  keyCode(KbName('s'))
+            scanPulse = 1;
+            a=4
+            break;
+        end
+    end
+    WaitSecs(0.005);
+end
+
+
+TargetSize=deg2pixel(3);
+
+fixLen=0.5;
+penWidth=round(deg2pixel(0.3));
+penWidth=6;
+
+% 0 3 6 9 13 16
+ecc_vars=[0,deg2pixel(3), deg2pixel(4),deg2pixel(5),deg2pixel(6),deg2pixel(7)];
+signSelect=[-1,1];
+
+response=[];
+for tr=1:length(emat)
+    %cueing,tarType,tarLoc,ISI
+    emat(tr,:)
+    TargetLocGrid=[cx+(ecc_vars(emat(tr,3))*signSelect(round(rand)+1)), cy];
+    TargetLocGrid=round(TargetLocGrid);
+    %fixation
+    for iter = 1:round(fixLen/ifi)
+        Screen('FillOval',wptr,255*[0,0,1],[cx-fixaSz,cy-fixaSz,cx+fixaSz,cy+fixaSz]);
+        Screen('Flip',wptr);
+    end
+    
+    % cue
+    if   emat(tr,1) ==1
+        for iter = 1:round(fixLen/ifi)
+            %             Screen('DrawLine', wptr,255*[0,1,0], cx-10, cy, cx+10, cy, 3);
+            Screen('DrawLine', wptr,255*[0,1,0], round(TargetLocGrid(1)-deg2pixel(1)),...
+                round(cy+deg2pixel(0.5)), round(TargetLocGrid(1)+deg2pixel(1)), round(cy+deg2pixel(0.5)), penWidth);
+            Screen('Flip',wptr);
+        end
+    else
+        for iter = 1:round(fixLen/ifi)
+            %             Screen('DrawLine', wptr,255*[0,1,0], cx-10, cy, cx+10, cy, 3);
+            Screen('DrawLine', wptr,255*[0,1,0], cx-(rect(3)/2), round(cy-deg2pixel(0.5)), cx+(rect(3)/2), round(cy-deg2pixel(0.5)), penWidth);
+            Screen('DrawLine', wptr,255*[0,1,0], cx-(rect(3)/2), round(cy+deg2pixel(0.5)), cx+(rect(3)/2), round(cy+deg2pixel(0.5)), penWidth);
+            Screen('Flip',wptr);
+        end
+        
+    end
+    Screen('Flip',wptr);
+
+        % SOA
+    for iter = 1:round(ifi*6) % 94 ms
+        Screen('FillOval',wptr,255*[0,0,1],[cx-fixaSz,cy-fixaSz,cx+fixaSz,cy+fixaSz]);
+        Screen('Flip',wptr);
+    end
+    
+    Screen('Flip',wptr);
+
+    % Target
+    tList=[9 10 11]; tLength1=tList(randperm(3,1));
+    tISI_list=[1,2,3]; tISI=tISI_list(emat(tr,4));
+    tLength2=4;
+    tLength1=100;
+    tLength2=100;
+    if emat(tr,2) ==1
+        for iter = 1:round(tLength1*ifi)
+            Screen('DrawDots', wptr, TargetLocGrid, TargetSize, [255 255 255], [], 2);
+            %         Screen('DrawDots', wptr, [dotXpos dotYpos], dotSizePix, dotColor, [], 2);
+            Screen('Flip',wptr);
+        end
+        
+    elseif emat(tr,2)==2
+        for on=1:round(tLength2*ifi)
+            Screen('DrawDots', wptr, TargetLocGrid, TargetSize, [255 255 255], [], 2);
+            Screen('Flip',wptr);
+        end
+        
+        for gap=1:round(tISI*ifi)
+            Screen('FillRect', wptr, [0 0 0]);
+            Screen('Flip',wptr);
+        end
+        
+        for off=1: round(tLength2*ifi)
+            Screen('DrawDots', wptr, TargetLocGrid, TargetSize, [255 255 255], [], 2);
+            Screen('Flip',wptr);
+        end
+        
+        
+    end
+    
+    Screen('Flip',wptr);
+
+    scanPulse = 0;
+    while scanPulse ~= 1
+        response(tr,1)=9; t1=GetSecs;
+        [keyIsDown, ~, keyCode] = KbCheck(Participant);
+%         [keyIsDown, ~, keyCode] = PsychHID('KbCheck');
+
+        if keyIsDown
+            if keyCode(KbName('1!'))
+                response(tr,1) = 1;
+                response(tr,2)=GetSecs-t1 ;
+                break;
+                
+            end
+            
+            if keyCode(KbName('2@'))
+                response(tr,1) = 2;
+                response(tr,2)=GetSecs-t1 ;
+                break;
+            end
+        end
+    end
+    
+    allList=[tr emat(tr,:) response(tr)];
+    save(dataName,'emat','response','allList');
+
+end
+
+WaitSecs(1);
+sca;
+
+
+```
+
 
 ###Analysis Plan
 
-Can also quote directly, though it is less often spelled out effectively for an analysis strategy section.  The key is to report an analysis strategy that is as close to the original - data cleaning rules, data exclusion rules, covariates, etc. - as possible.  
+No mention of participant and data exclusion in the origianl paper.
 
-**Clarify key analysis of interest here**  You can also pre-specify additional analyses you plan to do.
+Dependent Variables:
+
+  - Accuracy(d') was calculated following equation: d' = z(hit) - z(false alarm), (Macmillan & Creelman, 1991). 
+  - Criterion(c, measure of response bias) was calcuated using: c = -0.5(z(hit) + z(false alarm)), (Macmillan & Creelman, 1991). 
+  - Reaction Time (RT)
+
+**Key Analysis:**
+
+  - Differences between cued and uncued trials
+  - Interaction effect of Cuing X Eccentricity
+  - The effect of interstimulus interval (ISI)
 
 ###Differences from Original Study
 
@@ -88,23 +328,73 @@ You can comment this section out prior to final report with data collection.
 
 Data preparation following the analysis plan.
 	
-```{r include=F}
+```{r }
 ###Data Preparation
+
+setwd("./") #Set working directory
+
+###Data Preparation
+
+setwd("./") #Set working directory
 
 ####Load Relevant Libraries and Functions
 
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+
 ####Import data
 
-#### Data exclusion / filtering
+catData <- read_csv("sub1_result.csv")
+head(catData)
 
 #### Prepare data for analysis - create columns etc.
+
+cleanedData = catData %>% 
+  mutate(accuracy = (cue == response)) # mutate to get accuracy
+
+
+preData<-cleanedData %>% 
+  group_by(targetType) %>%
+  summarize(AvgAccuracy = mean(accuracy), avgRT=mean(RT)) # the na.rm tells R to ignore NA values
+
 ```
 
 ### Confirmatory analysis
 
 The analyses as specified in the analysis plan.  
 
+Following the original paper: 
+
+"A within-observers three-way analysis of variance (ANOVA; Cuing x Eccentricity x ISI) was performed on the accuracy (d') and RT data collected on trials with correct responses." 
+
+3 way ANOVA anova was performed.
+```{r,eval=FALSE}
+# 3-way Anova
+Result <- aov(Y ~ Cuing * Eccentricity * ISI, data = cleanedData)
+summary(Result)
+```
+
+The original paper found:
+  - Significant main effect of cuing: F(1,17)=8.01 p<.01
+  - No significant interactions: Cuing X ISI, Cuing X Eccentricity, and ISI X Eccentricity
+    - But the performance decrement in the cued trials was more pronounced for shorter ISIs (i.e., when a higher temporal resolution is required) than for longer ISIs and for more central, compared with more peripheral, eccentricities (Figs. 2b–2d, respectively).
+  - Small but significant differences in response bias(c) between cueing conditions. 
+  - No significant effect of RT
+  
+This project compared the findings of above mentioned results of the original paper.
+
+
 *Side-by-side graph with original graph is ideal here*
+![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/fig2.png)
+
+```{r,eval=FALSE}
+ggplot(OnlyKeyColumns, aes(x=Cueing, y=dPrime))+
+  geom_point()+
+  ggtitle("Cueing Condition")+
+  ylim(1.25,3.37)
+```
+
 
 ###Exploratory analyses
 
