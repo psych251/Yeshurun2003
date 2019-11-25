@@ -94,200 +94,7 @@ Followed the exact procedure as quated from the original article:
 
 Due to the requirement of precise timing of my project, I coded my experiment using MATLAB psychtoolbox. 
 
-As written below:
-
-```{r eval=FALSE}
-
-%% SpatioTemporal Replication proejct 
-clear all; close all; clc;
-rand('seed', GetSecs);
-KbName('UnifyKeyNames'); % keyboard
-
-Experimenter = -3;
-Participant = -3;
-Scanner = -3;
-
-%% Subject information
-subName = input('Subject Initials:  ', 's');
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% directory setting
-genDir = '/Users/kalanit/Experiments/replicate';
-%genDir = '/Users/sangkyu/Box Sync/mooney';
-addpath(genpath(fullfile(genDir,'_FUNC')));
-dataDir = fullfile(genDir,'_DATA','behavior',subName);
-if ~exist(dataDir) &&  ~strcmp(subName,'tes'), mkdir(dataDir); end
-datas = getAllFiles(dataDir,'*.mat',1);
-runN=length(datas)+1;
-dataName = fullfile(dataDir,sprintf('exp1_%s_%d',subName,length(datas)+1));
-
-%% screen setting
-bdgcol = 128;
-Screen('Preference', 'SkipSyncTests', 1);
-ScreenNum = max(Screen('Screens'));
-[wptr,rect]=Screen('OpenWindow',ScreenNum,[0 0 0]);
-Screen('BlendFunction', wptr, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-% Screen('HideCursorHelper', wptr);
-[cx, cy] = RectCenter(rect);
-ifi = 1/85;
-
-Screen('TextSize',wptr, 40);
-
-
-
-%% experiment matrix design
-
-fixaSz = 5;
-totalTrial=864;
-cond=[0,1]; % 1: cued 0: uncued
-loc=[1:6];
-type=[1,2]; % 1: single disk, 2: two disks
-ISI_base=[1,2,3];
-iteration=1; % this should be 12
-
-[cueing,tarType,tarLoc,ISI]= ...
-    BalanceFactors(iteration,1,cond,type,loc,ISI_base);
-
-trialNum=1:length(cueing);
-emat=[cueing,tarType,tarLoc,ISI];
-
-if ~strcmp(subName,'tes'),save(dataName,'emat');end
-
-%% experiment loop
-Screen('DrawText',wptr,'start',cx/2,cy/2,[255 255 255]);
-Screen('Flip',wptr);
-
-scanPulse = 0;
-while scanPulse ~= 1
-    [keyIsDown, ~, keyCode] = KbCheck(Participant);
-%     [keyIsDown, ~, keyCode] = PsychHID('KbCheck');
-    if keyIsDown
-        a=3
-        if  keyCode(KbName('s'))
-            scanPulse = 1;
-            a=4
-            break;
-        end
-    end
-    WaitSecs(0.005);
-end
-
-
-TargetSize=deg2pixel(3);
-
-fixLen=0.5;
-penWidth=round(deg2pixel(0.3));
-penWidth=6;
-
-% 0 3 6 9 13 16
-ecc_vars=[0,deg2pixel(3), deg2pixel(4),deg2pixel(5),deg2pixel(6),deg2pixel(7)];
-signSelect=[-1,1];
-
-response=[];
-for tr=1:length(emat)
-    %cueing,tarType,tarLoc,ISI
-    emat(tr,:)
-    TargetLocGrid=[cx+(ecc_vars(emat(tr,3))*signSelect(round(rand)+1)), cy];
-    TargetLocGrid=round(TargetLocGrid);
-    %fixation
-    for iter = 1:round(fixLen/ifi)
-        Screen('FillOval',wptr,255*[0,0,1],[cx-fixaSz,cy-fixaSz,cx+fixaSz,cy+fixaSz]);
-        Screen('Flip',wptr);
-    end
-    
-    % cue
-    if   emat(tr,1) ==1
-        for iter = 1:round(fixLen/ifi)
-            %             Screen('DrawLine', wptr,255*[0,1,0], cx-10, cy, cx+10, cy, 3);
-            Screen('DrawLine', wptr,255*[0,1,0], round(TargetLocGrid(1)-deg2pixel(1)),...
-                round(cy+deg2pixel(0.5)), round(TargetLocGrid(1)+deg2pixel(1)), round(cy+deg2pixel(0.5)), penWidth);
-            Screen('Flip',wptr);
-        end
-    else
-        for iter = 1:round(fixLen/ifi)
-            %             Screen('DrawLine', wptr,255*[0,1,0], cx-10, cy, cx+10, cy, 3);
-            Screen('DrawLine', wptr,255*[0,1,0], cx-(rect(3)/2), round(cy-deg2pixel(0.5)), cx+(rect(3)/2), round(cy-deg2pixel(0.5)), penWidth);
-            Screen('DrawLine', wptr,255*[0,1,0], cx-(rect(3)/2), round(cy+deg2pixel(0.5)), cx+(rect(3)/2), round(cy+deg2pixel(0.5)), penWidth);
-            Screen('Flip',wptr);
-        end
-        
-    end
-    Screen('Flip',wptr);
-
-        % SOA
-    for iter = 1:round(ifi*6) % 94 ms
-        Screen('FillOval',wptr,255*[0,0,1],[cx-fixaSz,cy-fixaSz,cx+fixaSz,cy+fixaSz]);
-        Screen('Flip',wptr);
-    end
-    
-    Screen('Flip',wptr);
-
-    % Target
-    tList=[9 10 11]; tLength1=tList(randperm(3,1));
-    tISI_list=[1,2,3]; tISI=tISI_list(emat(tr,4));
-    tLength2=4;
-    tLength1=100;
-    tLength2=100;
-    if emat(tr,2) ==1
-        for iter = 1:round(tLength1*ifi)
-            Screen('DrawDots', wptr, TargetLocGrid, TargetSize, [255 255 255], [], 2);
-            %         Screen('DrawDots', wptr, [dotXpos dotYpos], dotSizePix, dotColor, [], 2);
-            Screen('Flip',wptr);
-        end
-        
-    elseif emat(tr,2)==2
-        for on=1:round(tLength2*ifi)
-            Screen('DrawDots', wptr, TargetLocGrid, TargetSize, [255 255 255], [], 2);
-            Screen('Flip',wptr);
-        end
-        
-        for gap=1:round(tISI*ifi)
-            Screen('FillRect', wptr, [0 0 0]);
-            Screen('Flip',wptr);
-        end
-        
-        for off=1: round(tLength2*ifi)
-            Screen('DrawDots', wptr, TargetLocGrid, TargetSize, [255 255 255], [], 2);
-            Screen('Flip',wptr);
-        end
-        
-        
-    end
-    
-    Screen('Flip',wptr);
-
-    scanPulse = 0;
-    while scanPulse ~= 1
-        response(tr,1)=9; t1=GetSecs;
-        [keyIsDown, ~, keyCode] = KbCheck(Participant);
-%         [keyIsDown, ~, keyCode] = PsychHID('KbCheck');
-
-        if keyIsDown
-            if keyCode(KbName('1!'))
-                response(tr,1) = 1;
-                response(tr,2)=GetSecs-t1 ;
-                break;
-                
-            end
-            
-            if keyCode(KbName('2@'))
-                response(tr,1) = 2;
-                response(tr,2)=GetSecs-t1 ;
-                break;
-            end
-        end
-    end
-    
-    allList=[tr emat(tr,:) response(tr)];
-    save(dataName,'emat','response','allList');
-
-end
-
-WaitSecs(1);
-sca;
-
-
-```
+Ths link for the exerpeimental code is posted in the github ![**[link]**]()
 
 
 ###Analysis Plan
@@ -333,10 +140,6 @@ Data preparation following the analysis plan.
 
 setwd("./") #Set working directory
 
-###Data Preparation
-
-setwd("./") #Set working directory
-
 ####Load Relevant Libraries and Functions
 
 library(tidyverse)
@@ -369,9 +172,9 @@ Following the original paper:
 "A within-observers three-way analysis of variance (ANOVA; Cuing x Eccentricity x ISI) was performed on the accuracy (d') and RT data collected on trials with correct responses." 
 
 3 way ANOVA anova was performed.
-```{r,eval=FALSE}
+```{r}
 # 3-way Anova
-Result <- aov(Y ~ Cuing * Eccentricity * ISI, data = cleanedData)
+Result <- aov(cleanedData$accuracy ~ cue * targetLoc * ISI, data = cleanedData)
 summary(Result)
 ```
 
@@ -386,15 +189,63 @@ This project compared the findings of above mentioned results of the original pa
 
 
 *Side-by-side graph with original graph is ideal here*
-![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/fig2.png)
+<!--![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/fig2.png) -->
 
-```{r,eval=FALSE}
-ggplot(OnlyKeyColumns, aes(x=Cueing, y=dPrime))+
-  geom_point()+
-  ggtitle("Cueing Condition")+
-  ylim(1.25,3.37)
+```{r}
+ggplot(preData, aes(x=targetType, y=AvgAccuracy))+
+geom_bar(stat="identity")+
+ggtitle("Cueing Condition")
+```
+```{r}
+fd=tibble(cond = "Cued", "Neutral")
+cond = c("Cued", "Neutral")
+accuracy=c(2.74,2.84)
+fd=tibble(cond,temp)
 ```
 
+
+```{r}
+myplot <- ggplot(fd, aes(x=cond, y=accuracy))+
+geom_bar(stat="identity")+
+coord_cartesian(ylim=c(1.25, 3.75))+
+ggtitle("Cueing Condition") 
+```
+
+```{r}
+myplot + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```
+
+```{r}
+df <- data.frame(ISI=c("11", "23", "35"),neutral=c(1.3, 3.4, 3.65), cued=c(1.25,3.22,3.68))
+
+df2 <- data.frame(cond=rep(c("Cued", "Neutral"), each=3),
+                ISI=rep(c("11", "23", "35"),2),
+                accuracy=c(1.25,3.18,3.5,1.5, 3.4, 3.63))
+a=c(1.25,3.18,3.8)
+b=c(1.5, 3.4, 3.63)
+
+mean(a)
+mean(b)
+```
+
+
+```{r}
+myplot <- ggplot(df2, aes(x=ISI, y=accuracy, group=cond)) +
+  geom_line(aes(linetype=cond))+
+  geom_point(aes(shape=cond))
+
+myplot + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+```
+
+
+```{r}
+ggplot(preData, aes(x=targetType, y=AvgAccuracy))+
+geom_bar(stat="identity")+
+ggtitle("Cueing Condition")
+```
 
 ###Exploratory analyses
 
