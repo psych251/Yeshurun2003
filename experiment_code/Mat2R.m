@@ -44,11 +44,29 @@ end
 catData(:,3)=targetLoc;
 catData(:,4)=ISI;
 
+
+numFlash=catData(:,2);
+response=catData(:,5);
+
+SDT=[];
+for l = 1:length(numFlash)
+    if numFlash(l) ==2 && response(l) ==2
+        SDT{l}='HI';
+    elseif numFlash(l) ==1 && response(l) ==1
+        SDT{l}='CR';
+    elseif numFlash(l) ==1 && response(l) ==2
+        SDT{l}='FA';
+    elseif numFlash(l) ==2 && response(l) ==1
+        SDT{l}='MI';
+    end
+end
+    
 %
 %%
 variables={'cue','numFlash','targetLoc','ISI','response','RT','accuracy'};
 sptioTemporal = dataset({catData,variables{:}});
 sptioTemporal.sub=catSub;
+sptioTemporal.SDT=SDT';
 
 
 export(sptioTemporal,'File','../data/sptioTemporal.csv','Delimiter',',');

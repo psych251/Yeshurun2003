@@ -68,11 +68,11 @@ The original paper had 3 different experiments. However, I am to only replicate 
 
 ###Power Analysis
 
-Original effect size, power analysis for samples to achieve 80%, 90%, 95% power to detect that effect size.  Considerations of feasibility for selecting planned sample size.
+Original effect size is not reported in the original paper. Thus, I aim to get 18 participants following the number of participant reported in the original paper. 
 
 ###Planned Sample
 
-I will use N subjects based on the power analysis.
+I will use 18 participants.
 
 ###Materials
 
@@ -94,7 +94,7 @@ Followed the exact procedure as quated from the original article:
 
 Due to the requirement of precise timing of my project, I coded my experiment using MATLAB psychtoolbox. 
 
-Ths link for the exerpeimental code is posted in the github ![**[link]**]()
+Ths link for the exerpeimental code is posted in the github ![**[link]**](https://github.com/psych251/Yeshurun2003/tree/master/experiment_code/_STIM)
 
 
 ###Analysis Plan
@@ -136,30 +136,56 @@ You can comment this section out prior to final report with data collection.
 Data preparation following the analysis plan.
 	
 ```{r }
-###Data Preparation
-
-setwd("./") #Set working directory
 
 ####Load Relevant Libraries and Functions
 
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
+library(psycho)
 
 ####Import data
 
-catData <- read_csv("sub1_result.csv")
-head(catData)
+d <- read_csv("sptioTemporal.csv")
+head(d)
 
 #### Prepare data for analysis - create columns etc.
 
-cleanedData = catData %>% 
-  mutate(accuracy = (cue == response)) # mutate to get accuracy
+d[d$cue==1,]$cue = 'cued'
+d[d$cue==0,]$cue = 'netrual'
+
+d <- d %>% mutate( 
+  cue = factor(cue), targetLoc = factor(targetLoc), ISI = factor(ISI)
+)
+
+```
+
+```{r}
 
 
-preData<-cleanedData %>% 
-  group_by(targetType) %>%
-  summarize(AvgAccuracy = mean(accuracy), avgRT=mean(RT)) # the na.rm tells R to ignore NA values
+d %>% 
+  group_by(numFlash,sub) %>%
+  summarize(AvgAccuracy = mean(accuracy)) # the na.rm tells R to ignore NA values
+
+ 
+
+
+dp <- d %>% group_by(sub,cue,targetLoc,ISI) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
+dp
+
+
+dplot_cue <- d %>% group_by(sub,cue) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
+dplot_cue
+
+
+
+dplot_ISI <- d %>% group_by(sub,cue,ISI) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
+
+dplot_ISI <- dplot_ISI %>% group_by(cue,ISI)  %>% summarize(`d'` = mean(dPrime))
+
+dplot_ecc <- d %>% group_by(sub,cue,targetLoc) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c)
+  
+dplot_ecc <- dplot_ecc %>% group_by(cue,targetLoc)  %>% summarize(`d'` = mean(dPrime))
 
 ```
 
@@ -174,7 +200,7 @@ Following the original paper:
 3 way ANOVA anova was performed.
 ```{r}
 # 3-way Anova
-Result <- aov(cleanedData$accuracy ~ cue * targetLoc * ISI, data = cleanedData)
+Result <- aov(dPrime ~ cue * targetLoc * ISI, data = dp)
 summary(Result)
 ```
 
@@ -191,61 +217,41 @@ This project compared the findings of above mentioned results of the original pa
 *Side-by-side graph with original graph is ideal here*
 <!--![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/fig2.png) -->
 
-```{r}
-ggplot(preData, aes(x=targetType, y=AvgAccuracy))+
-geom_bar(stat="identity")+
-ggtitle("Cueing Condition")
-```
-```{r}
-fd=tibble(cond = "Cued", "Neutral")
-cond = c("Cued", "Neutral")
-accuracy=c(2.74,2.84)
-fd=tibble(cond,temp)
-```
-
 
 ```{r}
-myplot <- ggplot(fd, aes(x=cond, y=accuracy))+
-geom_bar(stat="identity")+
-coord_cartesian(ylim=c(1.25, 3.75))+
-ggtitle("Cueing Condition") 
-```
+ggplot(dplot_cue, aes(x=cue, y=dPrime))+
+  geom_boxplot() +
+  geom_jitter((aes(colour = sub)), size=3, alpha=0.9) +
+  ggtitle("Cueing Condition") +
+  coord_cartesian(ylim=c(2, 2.7)) +
+  theme_classic()
 
-```{r}
-myplot + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
-```
 
-```{r}
-df <- data.frame(ISI=c("11", "23", "35"),neutral=c(1.3, 3.4, 3.65), cued=c(1.25,3.22,3.68))
 
-df2 <- data.frame(cond=rep(c("Cued", "Neutral"), each=3),
-                ISI=rep(c("11", "23", "35"),2),
-                accuracy=c(1.25,3.18,3.5,1.5, 3.4, 3.63))
-a=c(1.25,3.18,3.8)
-b=c(1.5, 3.4, 3.63)
 
-mean(a)
-mean(b)
 ```
 
 
 ```{r}
-myplot <- ggplot(df2, aes(x=ISI, y=accuracy, group=cond)) +
-  geom_line(aes(linetype=cond))+
-  geom_point(aes(shape=cond))
+myplot <- ggplot(dplot_ISI, aes(x=ISI, y=`d'`, group=cue)) +
+  geom_line(aes(linetype=cue))+
+  geom_point(aes(shape=cue))
 
 myplot + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 ```
 
-
 ```{r}
-ggplot(preData, aes(x=targetType, y=AvgAccuracy))+
-geom_bar(stat="identity")+
-ggtitle("Cueing Condition")
+myplot <- ggplot(dplot_ecc, aes(x=targetLoc, y=`d'`, group=cue)) +
+  geom_line(aes(linetype=cue))+
+  geom_point(aes(shape=cue))
+
+myplot + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
 ```
+
 
 ###Exploratory analyses
 
