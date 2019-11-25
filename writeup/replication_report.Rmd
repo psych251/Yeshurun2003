@@ -162,29 +162,20 @@ d <- d %>% mutate(
 
 ```{r}
 
-
 d %>% 
   group_by(numFlash,sub) %>%
   summarize(AvgAccuracy = mean(accuracy)) # the na.rm tells R to ignore NA values
 
- 
-
-
 dp <- d %>% group_by(sub,cue,targetLoc,ISI) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
 dp
-
 
 dplot_cue <- d %>% group_by(sub,cue) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
 dplot_cue
 
-
-
 dplot_ISI <- d %>% group_by(sub,cue,ISI) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
-
 dplot_ISI <- dplot_ISI %>% group_by(cue,ISI)  %>% summarize(`d'` = mean(dPrime))
 
 dplot_ecc <- d %>% group_by(sub,cue,targetLoc) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c)
-  
 dplot_ecc <- dplot_ecc %>% group_by(cue,targetLoc)  %>% summarize(`d'` = mean(dPrime))
 
 ```
