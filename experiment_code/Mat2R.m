@@ -27,21 +27,20 @@ for i = 1:length(alldata)
 end
 %%
 catData(:,end+1)=(catData(:,2)==catData(:,5));
-targetLoc=catData(:,3);
 ISI=catData(:,4);
-locs=[0 100 6 9 13 16];
-
-for c = 1: length(unique(targetLoc))
-    targetLoc(find(targetLoc==c)) = locs(c);
-end
-targetLoc(find(targetLoc==100)) = 3;
+% targetLoc=catData(:,3);
+% locs=[0 100 6 9 13 16];
+% for c = 1: length(unique(targetLoc))
+%     targetLoc(find(targetLoc==c)) = locs(c);
+% end
+% targetLoc(find(targetLoc==100)) = 3;
+% catData(:,3)=targetLoc;
 
 ISIs=[11 23 35];
 for c = 1: length(ISIs)
     ISI(find(ISI==c)) = ISIs(c);
 end
 
-catData(:,3)=targetLoc;
 catData(:,4)=ISI;
 
 
@@ -69,7 +68,7 @@ sptioTemporal.sub=catSub;
 sptioTemporal.SDT=SDT';
 
 
-export(sptioTemporal,'File','../data/sptioTemporal.csv','Delimiter',',');
+export(sptioTemporal,'File','../writeup/sptioTemporal.csv','Delimiter',',');
 
 
 % fileparts(alldata{1})

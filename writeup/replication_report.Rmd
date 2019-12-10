@@ -10,79 +10,45 @@ output:
       collapsed: false
 ---
 
-<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+## Introduction
 
-<!-- g*power
-power_analysis finding out how many we need to recruit
+Yeshurun and Levy (2003), investigated the effect of spatial attention on visual temporal processes. The authors manipulated observers’  spatial attention by using peripheral pre-cueing and measured their temporal resolution by two-flash fusion threshold (ability to discriminate successive two light flashes). Through this investigation, they found that enhanced spatial attention reduced temporal resolution.
 
-$7.25/hour
-about $70 budget
-https://github.com/psych251
-http://rpubs.com/jcachia/426413
- -->
+I chose this paper because my research interest lies in establishing a spatial-temporal model for the visual cortex. Specifically, as this paper investigated the relationship between spatial and temporal visual characteristics, replicating this paper would provide further insights on how attentional factors could contribute to interplays between perceptual domain of space and time. In the long run, I would like to incorporate the effect of attention on temporal processing with its emphasis on foveal and peripheral spatial representation differences.
 
-<!-- Some researchers have suggested that attention enhances spatial
-resolution by reducing the size of receptive fields at the attended location
-(e.g., Desimone & Duncan, 1995; Moran & Desimone, 1985). -->
+For this project, each observer’s threshold of temporal resolution will be measured in two different conditions (cued and neutral). In cued trials, a periphery cue will be presented before the target onset, which indicates the target’s location. While in neutral trials, neutral cue with no indication of the target’s location will be presented.
 
+The original paper had 3 different experiments. However, I am to only replicate experiment 1 for this project.
 
-<!-- our submission for this assignment is your replication report, rendered in RPubs. The sections that should be filled are:
-
-Introduction
-Methods
-Results > Data Preparation
-Results > Confirmatory Analysis
-Please remember to add A) a link to the repository for the full project and B) a link to the paradigm so that a reader can click and see exactly what your experiment looks like.
-
-In this assignment we are asking you to fill in text in the methods. You don't have data yet, so you can't write code. But the idea is to be as precise as possible with respect to the exclusions, data prep, and confirmatory analysis as you can be. 
-
-In particular, with respect to the confirmatory analysis, please try your best to find and justify a SINGLE statistical test that justifies the main inference of the paper. This can be difficult in certain cases, but please do your best to give a test and justification. 
-
-Note that some folks in the class did not render in RPubs last time - PLEASE do this to help TAs and instructor grades. If you have troubles with this step, reach out to us. 
-
- 
-
-EDIT (Oct 14, 2019): Since we are covering power analyses next week, please don't worry about filling out the power analysis section of the Methods for this assignment. Similarly, since we are just covering Qualtrics and JavaScript this week, please don't worry about submitting the link to your experiment. However, since the next project assignment (in 2 weeks) requires running a pilot study, please ensure that both the power analysis and the experiment link are ready by that time.  -->
-
-
-
-##Introduction
-
-Yeshurun and Levy (2003), investigated the effect of spatial attention on visual temporal processes. The authors manipulated observers’ transient spatial attention by using peripheral pre-cueing and measured their temporal resolution by two-flash fusion threshold (ability to discriminate successive two light flashes). Through this investigation, they found that enhanced spatial attention reduced temporal resolution.
-
-I chose this paper because my research interest lies in establishing spatial-temporal model for our visual cortex. Specifically, as this paper investigated the relationship between spatial and temporal visual characteristics, I am hoping that replicating this paper would provide further insights on how attentional factors could contribute to interplays between perceptual domain of space and time. In the long run, I would like to incorporate the effect of attention on temporal processing with its emphasis on foveal and peripheral spatial representation differences.
-
-For this project, each observer’s threshold of temporal resolution will be measured in two different conditions (cued and un-cued). In cued trials, a periphery cue will be presented before the target onset, which indicate the target’s location. While in un-cued trials, neutral cue with no indication of the target’s location will be presented. Therefore, precise control of stimuli presentation timing might be a challenge for the replication project and I am not sure if M-turk can handle stimulus timing as brief as 11 ms.
-
-The original paper had 3 different experiments. However, I am to only replicate experiment 3 for this project and observers will be recruited from Amazon M-turk.
-
-* Github repository: https://github.com/psych251/Yeshurun2003
+* Github repository: https://github.com/psych251/Yeshurun2003  
 	
-* Original paper: https://github.com/psych251/Yeshurun2003/tree/master/original_paper
+* Original paper: https://github.com/psych251/Yeshurun2003/tree/master/original_paper  
 
-* rPubLink: http://rpubs.com/insubkim/536227
+* rPubLink: http://rpubs.com/insubkim/553521 
+
+* Preregistration: https://osf.io/dmk8n/  
 
 * Reference: Yeshurun, Y., & Levy, L. (2003). Transient spatial attention degrades temporal resolution. Psychological Science, 14(3), 225-231.
 
-##Methods
+## Methods
 
-###Power Analysis
+### Power Analysis
 
 Original effect size is not reported in the original paper. Thus, I aim to get 18 participants following the number of participant reported in the original paper. 
 
-###Planned Sample
+### Planned Sample
 
 I will use 18 participants.
 
-###Materials
+### Materials
 
 Two-flash fusion threshold: Measure of temporal resolution. "Two flashes of light were presented successively to the same location, and we determined the minimal interval between the flashes at which they were still perceived as two separate flashes, rather than as a single continuous flash. The shorter this critical interval is, the higher the temporal resolution (e.g., Artieda, Pastor, Lacruz, & Obeso, 1992;Reeves, 1996)."
 
-Target: The target (37-cd/m2 disk with a diameter of 3 degrees) was composed of two flashes of light separated by a brief interval or a single continous flash. "It appeared on a black background at one of 11 possible locations along the horizontal meridian, with eccentricity (distance from the center) ranging from 0 to 16.5 degrees The cue in the cued trials was a 1 X 0.3 degrees green horizontal bar (43 cd/m2) appearing 0.5 degree above the target’s location. In the neutral trials, two 17 x 0.3 degree green horizontal lines appeared above and below the entire display."
+Target: The target (37-cd/m2 disk with a diameter of 3 degrees) was composed of two flashes of light separated by a brief interval or a single continous flash. "It appeared on a black background at one of 11 possible locations along the horizontal meridian, with eccentricity (distance from the center) ranging from 0 to 16.5 degrees. The cue in the cued trials was a 1 X 0.3 degrees green horizontal bar (43 cd/m2) appearing 0.5 degree above the target’s location. In the neutral trials, two 17 x 0.3 degree green horizontal lines appeared above and below the entire display."
 
 Insturements: 21-inch monitor of a PowerMac G4 computer was used in the original experiment. 
 
-###Procedure	
+### Procedure	
 
 Followed the exact procedure as quated from the original article:
 
@@ -94,10 +60,10 @@ Followed the exact procedure as quated from the original article:
 
 Due to the requirement of precise timing of my project, I coded my experiment using MATLAB psychtoolbox. 
 
-Ths link for the exerpeimental code is posted in the github ![**[link]**](https://github.com/psych251/Yeshurun2003/tree/master/experiment_code/_STIM)
+The link for the exerpeimental code is posted in the github: https://github.com/psych251/Yeshurun2003/tree/master/experiment_code/_STIM
 
 
-###Analysis Plan
+### Analysis Plan
 
 No mention of participant and data exclusion in the origianl paper.
 
@@ -109,33 +75,33 @@ Dependent Variables:
 
 **Key Analysis:**
 
-  - Differences between cued and uncued trials
-  - Interaction effect of Cuing X Eccentricity
+  - Differences between cued and neutral trials
   - The effect of interstimulus interval (ISI)
 
-###Differences from Original Study
+### Differences from Original Study
 
-Explicitly describe known differences in sample, setting, procedure, and analysis plan from original study.  The goal, of course, is to minimize those differences, but differences will inevitably occur.  Also, note whether such differences are anticipated to make a difference based on claims in the original article or subsequent published research on the conditions for obtaining the effect.
-
-### Methods Addendum (Post Data Collection)
-
-You can comment this section out prior to final report with data collection.
+I tried to minimize all the differences from the original study and there are no specific differences that I can think of from the original.
 
 #### Actual Sample
-  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+
+Although I have planned for 18 participants, I was only able to get 10 participants The participants were PSYCH 1 students at Stanford. 
+  
+#### Exclusion
+
+No Data were excluded 
 
 #### Differences from pre-data collection methods plan
-  Any differences from what was described as the original plan, or “none”.
 
+  Less sample collected (10 participants in total). I was not able to collect 18 participants before the end of the class.
 
-##Results
+## Results
 
 
 ### Data preparation
 
 Data preparation following the analysis plan.
 	
-```{r }
+```{r,echo=FALSE,message=FALSE}
 
 ####Load Relevant Libraries and Functions
 
@@ -143,41 +109,69 @@ library(tidyverse)
 library(ggplot2)
 library(ggthemes)
 library(psycho)
+library(ggpubr)
+library(gridExtra)
+library(cowplot)
 
 ####Import data
 
 d <- read_csv("sptioTemporal.csv")
-head(d)
 
-#### Prepare data for analysis - create columns etc.
+#### Prepare data for analysis - create columns and change variable names
 
 d[d$cue==1,]$cue = 'cued'
-d[d$cue==0,]$cue = 'netrual'
+d[d$cue==0,]$cue = 'neutral'
+
+x=1:length(unique(d$sub))
+new_subNames=sprintf("s0%02d",x)
+subNames = unique(d$sub)
+for(i in 1:length(subNames)) {
+  d$sub[d$sub == subNames[i]] = new_subNames[i]
+}
+
+
+kk = sort(unique(d$targetLoc))
+mask1=d$targetLoc ==kk[1]
+mask2=d$targetLoc ==kk[2]
+mask3=d$targetLoc ==kk[3]
+mask4=d$targetLoc ==kk[4]
+mask5=d$targetLoc ==kk[5]
+mask6=d$targetLoc ==kk[6]
+
+d$targetLoc[mask1] = 0
+d$targetLoc[mask2] = 3
+d$targetLoc[mask3] = 6
+d$targetLoc[mask4] = 9
+d$targetLoc[mask5] = 13
+d$targetLoc[mask6] = 16
+
 
 d <- d %>% mutate( 
-  cue = factor(cue), targetLoc = factor(targetLoc), ISI = factor(ISI)
+  cue = factor(cue),targetLoc = factor(targetLoc), ISI = factor(ISI)
 )
+
 
 ```
 
+
+
 ```{r}
 
-d %>% 
-  group_by(numFlash,sub) %>%
-  summarize(AvgAccuracy = mean(accuracy)) # the na.rm tells R to ignore NA values
+#### Compute dPrime
 
-dp <- d %>% group_by(sub,cue,targetLoc,ISI) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
-dp
+dp <- d %>% group_by(sub,cue,targetLoc,ISI) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) 
 
-dplot_cue <- d %>% group_by(sub,cue) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
-dplot_cue
+#### Make sub-selection of the data for plotting 
 
-dplot_ISI <- d %>% group_by(sub,cue,ISI) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) #
-dplot_ISI <- dplot_ISI %>% group_by(cue,ISI)  %>% summarize(`d'` = mean(dPrime))
+dplot_cue <- dp %>% group_by(sub,cue) %>% summarize(dPrime = mean(dPrime))
+dplot_ecc <- dp %>% group_by(cue,targetLoc) %>% summarize(dPrime = mean(dPrime))
+dplot_ecc2 <- dp %>% group_by(targetLoc,ISI) %>% summarize(dPrime = mean(dPrime))
+dplot_ISI <- dp %>% group_by(cue,ISI) %>% summarize(dPrime = mean(dPrime))
+dplot_stat_ISI <- dp %>% group_by(sub,cue,ISI) %>% summarize(dPrime = mean(dPrime))
 
-dplot_ecc <- d %>% group_by(sub,cue,targetLoc) %>% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c)
-dplot_ecc <- dplot_ecc %>% group_by(cue,targetLoc)  %>% summarize(`d'` = mean(dPrime))
 
+dplot_ecc_sd <- dp %>% group_by(sub,targetLoc,ISI) %>% summarize(dPrime = mean(dPrime))
+filter(dplot_ecc_sd)
 ```
 
 ### Confirmatory analysis
@@ -188,73 +182,97 @@ Following the original paper:
 
 "A within-observers three-way analysis of variance (ANOVA; Cuing x Eccentricity x ISI) was performed on the accuracy (d') and RT data collected on trials with correct responses." 
 
-3 way ANOVA anova was performed.
+The key statistic of 3 way ANOVA anova was performed.
 ```{r}
-# 3-way Anova
-Result <- aov(dPrime ~ cue * targetLoc * ISI, data = dp)
-summary(Result)
+
+
+# The key statistic: within-subject 3-way Anova
+Result <- aov(dPrime ~ (cue*targetLoc*ISI) + Error(sub/cue*targetLoc*ISI), data=dp)
+
+# main effect: Cuing
+summary(Result[5])
+
+# interaction effect: Cuing X ISI
+summary(Result[10])
+
 ```
 
-The original paper found:
-  - Significant main effect of cuing: F(1,17)=8.01 p<.01
-  - No significant interactions: Cuing X ISI, Cuing X Eccentricity, and ISI X Eccentricity
-    - But the performance decrement in the cued trials was more pronounced for shorter ISIs (i.e., when a higher temporal resolution is required) than for longer ISIs and for more central, compared with more peripheral, eccentricities (Figs. 2b–2d, respectively).
-  - Small but significant differences in response bias(c) between cueing conditions. 
-  - No significant effect of RT
-  
-This project compared the findings of above mentioned results of the original paper.
+The original paper found:  
+  - Significant main effect of cuing: F(1,17)=8.01 p<.01  
+  - No significant interactions: Cuing X ISI, Cuing X Eccentricity, and ISI X Eccentricity  
+  - But the performance decrement in the cued trials was more pronounced for shorter ISIs (i.e., when a higher temporal resolution is required) than for longer ISIs and for more central, compared with more peripheral, eccentricities (Figs. 2b–2d, respectively).
+
+The replication porject found:  
+  - No significant main effect of cuing: F(1,9)=2.061 p=.0185  
+  - Significant interaction effect of Cuing X ISI: F(2,18)=10.86 p<.001  
 
 
-*Side-by-side graph with original graph is ideal here*
 <!--![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/fig2.png) -->
 
 
-```{r}
-ggplot(dplot_cue, aes(x=cue, y=dPrime))+
+```{r,fig.height = 7, fig.width = 7}
+
+# Cueing effect
+p1 <- ggplot(dplot_cue, aes(x=cue, y=dPrime))+
   geom_boxplot() +
-  geom_jitter((aes(colour = sub)), size=3, alpha=0.9) +
+  #geom_jitter((aes(colour = sub)), size=3, alpha=0.9) +
+  scale_y_continuous(breaks = seq(0,3.75,0.5),limits = c(0,3.75))+
   ggtitle("Cueing Condition") +
-  coord_cartesian(ylim=c(2, 2.7)) +
   theme_classic()
 
 
-
-
-```
-
-
-```{r}
-myplot <- ggplot(dplot_ISI, aes(x=ISI, y=`d'`, group=cue)) +
+# Cueing X Ecc
+p2 <- ggplot(dplot_ecc, aes(x=targetLoc, y=`dPrime`, group=cue)) +
   geom_line(aes(linetype=cue))+
-  geom_point(aes(shape=cue))
+  geom_point(aes(shape=cue))+
+  scale_y_continuous(breaks = seq(0,4,0.5),limits = c(0,4))+
+  scale_x_discrete(name="Eccentricity (deg)")+
+  ggtitle("Eccentricity") +
+  theme_classic()
 
-myplot + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
-
-```
-
-```{r}
-myplot <- ggplot(dplot_ecc, aes(x=targetLoc, y=`d'`, group=cue)) +
+# Cueing X ISI
+p3 <- ggplot(dplot_ISI, aes(x=ISI, y=dPrime, group=cue)) +
   geom_line(aes(linetype=cue))+
-  geom_point(aes(shape=cue))
+  geom_point(aes(shape=cue))+
+  scale_y_continuous(breaks = seq(0,4,0.5),limits = c(0,4))+
+  scale_x_discrete(name="ISI (ms)")+
+  theme_classic()
 
-myplot + theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+# ECC X ISI
+p4 <- ggplot(dplot_ecc2, aes(x=targetLoc, y=`dPrime`, group=ISI)) +
+  geom_line(aes(linetype=ISI))+
+  geom_point(aes(shape=ISI))+
+  scale_y_continuous(breaks = seq(0,4,0.5),limits = c(0,4))+
+  scale_x_discrete(name="Eccentricity (deg)")+
+  theme_classic()
+
+plot_grid(p1, p2, p3, p4,ncol = 2, nrow = 2)
+
 
 ```
+![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/original_fig.png)
 
-
-###Exploratory analyses
-
-Any follow-up analyses desired (not required).  
 
 ## Discussion
 
 ### Summary of Replication Attempt
 
-Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+
+1. No main effect of cueing.  
+
+  Although the original paper reported the main effect of cueing. The current paper found no differences between cueing and neutral condtions.  
+
+
+2. Interaction effect of cueing and ISI 
+
+  The original paper reported no interaction effect between cueing and ISI. Interestingly, the current study found a significant interaction effect between cueing and ISI. The result showed that in longer ISI conditions, spatial attention enhanced performance in the temporal resolution task, while in shorter ISI, spatial attention degraded the performance.  
+
 
 ### Commentary
 
-Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
+One possible reason for obtaining the different results from that of the original study is the lack of the sample size. I was only able to collect data from 10 participants which may not provide enough statistical power. Moreover, participants in the current study showed overall lower accuracy compared to that of the original study (about 0.5 d' lower than the original). Thus, it is possible that I am testing the effect of spatial attention within a different range of temporal resolution difficulty.
+
+
+
+
 
