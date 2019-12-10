@@ -185,7 +185,6 @@ Following the original paper:
 The key statistic of 3 way ANOVA anova was performed.
 ```{r}
 
-
 # The key statistic: within-subject 3-way Anova
 Result <- aov(dPrime ~ (cue*targetLoc*ISI) + Error(sub/cue*targetLoc*ISI), data=dp)
 
@@ -252,6 +251,36 @@ plot_grid(p1, p2, p3, p4,ncol = 2, nrow = 2)
 ```
 ![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/original_fig.png)
 
+### Exploratory Analysis
+
+```{r}
+#paired t-test
+
+# ISI == 11
+cond1 = filter(dplot_stat_ISI,cue=='cued', ISI == 11)
+cond2 = filter(dplot_stat_ISI,cue=='neutral', ISI == 11)
+outcome=t.test(cond1$dPrime,cond2$dPrime,paired=TRUE)
+
+pt1 =sprintf("t(%d) = %1.1f, p = %1.3f",outcome$parameter, outcome$statistic,outcome$p.value)
+pt1
+
+# ISI == 23
+cond1 = filter(dplot_stat_ISI, cue=='cued',ISI==23)
+cond2 = filter(dplot_stat_ISI,cue=='neutral',ISI==23)
+outcome=t.test(cond1$dPrime,cond2$dPrime,paired=TRUE)
+
+pt2 =sprintf("t(%d) = %1.1f, p = %1.3f",outcome$parameter, outcome$statistic,outcome$p.value)
+pt2
+
+# ISI == 35
+cond1 = filter(dplot_stat_ISI, cue=='cued',ISI==35)
+cond2 = filter(dplot_stat_ISI,cue=='neutral',ISI==35)
+outcome=t.test(cond1$dPrime,cond2$dPrime,paired=TRUE)
+
+pt3 =sprintf("t(%d) = %1.1f, p = %1.3f",outcome$parameter, outcome$statistic,outcome$p.value)
+pt3
+
+```
 
 ## Discussion
 
@@ -265,7 +294,7 @@ plot_grid(p1, p2, p3, p4,ncol = 2, nrow = 2)
 
 2. Interaction effect of cueing and ISI 
 
-  The original paper reported no interaction effect between cueing and ISI. Interestingly, the current study found a significant interaction effect between cueing and ISI. The result showed that in longer ISI conditions, spatial attention enhanced performance in the temporal resolution task, while in shorter ISI, spatial attention degraded the performance.  
+  The original paper reported no interaction effect between cueing and ISI. Interestingly, the current study found a significant interaction effect between cueing and ISI. The result showed that in longer ISI conditions, spatial attention enhanced performance in the temporal resolution task, while in shorter ISI, spatial attention degraded the performance. Specifically, the post-hoc test of paired t test revealed that spatial attention enchanced the task performance in ISI of 11 ms, `r pt1`; while spatial attention degraded the task performance in ISI of 35 ms, `r pt3`.   
 
 
 ### Commentary
