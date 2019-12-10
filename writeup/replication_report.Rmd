@@ -24,7 +24,7 @@ The original paper had 3 different experiments. However, I am to only replicate 
 	
 * Original paper: https://github.com/psych251/Yeshurun2003/tree/master/original_paper  
 
-* rPubLink: http://rpubs.com/insubkim/553521 
+* rPubLink: http://rpubs.com/insubkim/558263
 
 * Preregistration: https://osf.io/dmk8n/  
 
@@ -84,11 +84,11 @@ I tried to minimize all the differences from the original study and there are no
 
 #### Actual Sample
 
-Although I have planned for 18 participants, I was only able to get 10 participants The participants were PSYCH 1 students at Stanford. 
+Although I have planned for 18 participants, I was only able to get 10 participants. The participants were PSYCH 1 students at Stanford. 
   
 #### Exclusion
 
-No Data were excluded 
+No Data were excluded.
 
 #### Differences from pre-data collection methods plan
 
@@ -101,7 +101,7 @@ No Data were excluded
 
 Data preparation following the analysis plan.
 	
-```{r,echo=FALSE,message=FALSE}
+```{r,message=FALSE}
 
 ####Load Relevant Libraries and Functions
 
@@ -171,7 +171,6 @@ dplot_stat_ISI <- dp %>% group_by(sub,cue,ISI) %>% summarize(dPrime = mean(dPrim
 
 
 dplot_ecc_sd <- dp %>% group_by(sub,targetLoc,ISI) %>% summarize(dPrime = mean(dPrime))
-filter(dplot_ecc_sd)
 ```
 
 ### Confirmatory analysis
@@ -252,6 +251,8 @@ plot_grid(p1, p2, p3, p4,ncol = 2, nrow = 2)
 ![**[Fig.2. adpated from the original paper]**](/Users/insubkim/Desktop/rClass/Yeshurun2003/writeup/original_fig.png)
 
 ### Exploratory Analysis
+
+Post-hoc t-test between cueing conditions (cued and neutral) for each ISI (11 ms, 23 ms, 35 ms).
 
 ```{r}
 #paired t-test

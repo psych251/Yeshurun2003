@@ -1526,7 +1526,7 @@ div.tocify {
 <ul>
 <li><p>Github repository: <a href="https://github.com/psych251/Yeshurun2003" class="uri">https://github.com/psych251/Yeshurun2003</a></p></li>
 <li><p>Original paper: <a href="https://github.com/psych251/Yeshurun2003/tree/master/original_paper" class="uri">https://github.com/psych251/Yeshurun2003/tree/master/original_paper</a></p></li>
-<li><p>rPubLink: <a href="http://rpubs.com/insubkim/553521" class="uri">http://rpubs.com/insubkim/553521</a></p></li>
+<li><p>rPubLink: <a href="http://rpubs.com/insubkim/558263" class="uri">http://rpubs.com/insubkim/558263</a></p></li>
 <li><p>Preregistration: <a href="https://osf.io/dmk8n/" class="uri">https://osf.io/dmk8n/</a></p></li>
 <li><p>Reference: Yeshurun, Y., &amp; Levy, L. (2003). Transient spatial attention degrades temporal resolution. Psychological Science, 14(3), 225-231.</p></li>
 </ul>
@@ -1581,11 +1581,11 @@ div.tocify {
 <p>I tried to minimize all the differences from the original study and there are no specific differences that I can think of from the original.</p>
 <div id="actual-sample" class="section level4">
 <h4>Actual Sample</h4>
-<p>Although I have planned for 18 participants, I was only able to get 10 participants The participants were PSYCH 1 students at Stanford.</p>
+<p>Although I have planned for 18 participants, I was only able to get 10 participants. The participants were PSYCH 1 students at Stanford.</p>
 </div>
 <div id="exclusion" class="section level4">
 <h4>Exclusion</h4>
-<p>No Data were excluded</p>
+<p>No Data were excluded.</p>
 </div>
 <div id="differences-from-pre-data-collection-methods-plan" class="section level4">
 <h4>Differences from pre-data collection methods plan</h4>
@@ -1598,6 +1598,52 @@ div.tocify {
 <div id="data-preparation" class="section level3">
 <h3>Data preparation</h3>
 <p>Data preparation following the analysis plan.</p>
+<pre class="r"><code>####Load Relevant Libraries and Functions
+
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(psycho)
+library(ggpubr)
+library(gridExtra)
+library(cowplot)
+
+####Import data
+
+d &lt;- read_csv(&quot;sptioTemporal.csv&quot;)
+
+#### Prepare data for analysis - create columns and change variable names
+
+d[d$cue==1,]$cue = 'cued'
+d[d$cue==0,]$cue = 'neutral'
+
+x=1:length(unique(d$sub))
+new_subNames=sprintf(&quot;s0%02d&quot;,x)
+subNames = unique(d$sub)
+for(i in 1:length(subNames)) {
+  d$sub[d$sub == subNames[i]] = new_subNames[i]
+}
+
+
+kk = sort(unique(d$targetLoc))
+mask1=d$targetLoc ==kk[1]
+mask2=d$targetLoc ==kk[2]
+mask3=d$targetLoc ==kk[3]
+mask4=d$targetLoc ==kk[4]
+mask5=d$targetLoc ==kk[5]
+mask6=d$targetLoc ==kk[6]
+
+d$targetLoc[mask1] = 0
+d$targetLoc[mask2] = 3
+d$targetLoc[mask3] = 6
+d$targetLoc[mask4] = 9
+d$targetLoc[mask5] = 13
+d$targetLoc[mask6] = 16
+
+
+d &lt;- d %&gt;% mutate( 
+  cue = factor(cue),targetLoc = factor(targetLoc), ISI = factor(ISI)
+)</code></pre>
 <pre class="r"><code>#### Compute dPrime
 
 dp &lt;- d %&gt;% group_by(sub,cue,targetLoc,ISI) %&gt;% summarize(nHit = sum(SDT == 'HI' ), nFA = sum(SDT == 'FA' ), nMiss = sum(SDT == 'MI' ), nCR = sum(SDT == 'CR' ), dPrime= dprime(nHit, nFA, nMiss, nCR)$dprime, criterion=dprime(nHit, nFA, nMiss, nCR)$c) 
@@ -1611,23 +1657,7 @@ dplot_ISI &lt;- dp %&gt;% group_by(cue,ISI) %&gt;% summarize(dPrime = mean(dPrim
 dplot_stat_ISI &lt;- dp %&gt;% group_by(sub,cue,ISI) %&gt;% summarize(dPrime = mean(dPrime))
 
 
-dplot_ecc_sd &lt;- dp %&gt;% group_by(sub,targetLoc,ISI) %&gt;% summarize(dPrime = mean(dPrime))
-filter(dplot_ecc_sd)</code></pre>
-<pre><code>## # A tibble: 180 x 4
-## # Groups:   sub, targetLoc [60]
-##    sub   targetLoc ISI   dPrime
-##    &lt;chr&gt; &lt;fct&gt;     &lt;fct&gt;  &lt;dbl&gt;
-##  1 s001  0         11     1.74 
-##  2 s001  0         23     2.33 
-##  3 s001  0         35     2.75 
-##  4 s001  3         11     1.25 
-##  5 s001  3         23     2.41 
-##  6 s001  3         35     3.03 
-##  7 s001  6         11     0.601
-##  8 s001  6         23     2.75 
-##  9 s001  6         35     3.23 
-## 10 s001  9         11     1.94 
-## # … with 170 more rows</code></pre>
+dplot_ecc_sd &lt;- dp %&gt;% group_by(sub,targetLoc,ISI) %&gt;% summarize(dPrime = mean(dPrime))</code></pre>
 </div>
 <div id="confirmatory-analysis" class="section level3">
 <h3>Confirmatory analysis</h3>
@@ -1701,6 +1731,7 @@ plot_grid(p1, p2, p3, p4,ncol = 2, nrow = 2)</code></pre>
 </div>
 <div id="exploratory-analysis" class="section level3">
 <h3>Exploratory Analysis</h3>
+<p>Post-hoc t-test between cueing conditions (cued and neutral) for each ISI (11 ms, 23 ms, 35 ms).</p>
 <pre class="r"><code>#paired t-test
 
 # ISI == 11

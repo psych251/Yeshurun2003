@@ -1,0 +1,10 @@
+name: Publish Document
+title:
+username:
+account: rpubs
+server: rpubs.com
+hostUrl: rpubs.com
+appId: https://api.rpubs.com/api/v1/document/558263/dc5bfaa04c774a1781fa5195c9b7dd71
+bundleId: https://api.rpubs.com/api/v1/document/558263/dc5bfaa04c774a1781fa5195c9b7dd71
+url: http://rpubs.com/insubkim/558263
+when: 1575949599.32873
